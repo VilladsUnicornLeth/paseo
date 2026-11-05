@@ -81,7 +81,10 @@ export async function scrollWorkspaceList(page: Page): Promise<void> {
 }
 
 export async function expectWorkspaceHoverCardOpen(page: Page): Promise<void> {
-  await expect(page.getByTestId("workspace-hover-card")).toBeVisible();
+  const card = page.getByTestId("workspace-hover-card");
+  // Moving keyboard focus can leave the previous card mounted during its exit animation.
+  await expect(card).toHaveCount(1);
+  await expect(card).toBeVisible();
 }
 
 export async function expectWorkspaceHoverCardStaysOpen(page: Page): Promise<void> {
